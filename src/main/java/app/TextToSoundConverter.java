@@ -13,7 +13,7 @@ import org.jfugue.player.Player;
 public class TextToSoundConverter {
 
     public static void main(String[] args) {
-        PlayerGUI janela = new PlayerGUI();
+        GraphicalInterface janela = new GraphicalInterface();
         janela.show();
         
         TxtFileHandler fileHandler = new TxtFileHandler();
