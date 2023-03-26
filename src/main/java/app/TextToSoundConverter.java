@@ -16,7 +16,7 @@ public class TextToSoundConverter {
         GraphicalInterface janela = new GraphicalInterface();
         janela.show();
         
-        TxtFileHandler fileHandler = new TxtFileHandler();
+      /*  TxtFileHandler fileHandler = new TxtFileHandler();
         String fileContent = "";
         try {
             fileContent = fileHandler.getStringFromTxtFile();
@@ -43,6 +43,6 @@ public class TextToSoundConverter {
         musica = fullSound.convertArrayOfPatternsToPattern(patternsList);
         player.play(musica);  
         // Salva o arquivo em .midi
-        fullSound.savePatternToMidiFile(musica);   
+        fullSound.savePatternToMidiFile(musica);   */
     }
 }
