@@ -19,13 +19,14 @@ public class PatternHandler {
             add("E");
             add("F");
             add("G");
+            add("R");
         }
     };
 
     private ArrayList<String> notes;
     private int volume;
     private int BPM;
-    private Instrument instrument;
+    private int instrument;
     private int octave;
 
 
@@ -44,37 +45,12 @@ public class PatternHandler {
     private final int defaultOctaveValue = 5;
     private final int minimumOctaveValue = 1;
 
-
-    // Enumerations
-    public enum Instrument{
-        PIANO(0),
-        XYLOPHONE(13),
-        HARMONICA(22),
-        GUITAR(24),
-        SLAP_BASS_1(36),
-        VIOLIN(40),
-        CHOIR_AAHS(52),
-        TUBA(58),
-        CLARINET(71),
-        FLUTE(73),
-        SQUARE(80),
-        CHOIR(91),
-        ECHOES(102),
-        BANJO(105),
-        AGOGO(113),
-        TELEPHONE_RING(124);
-
-        private final int id;
-        Instrument(int id) { this.id = id; }
-        public int getValue() { return id; }
-    }
-
     // Constructors
-    public PatternHandler(int volumePercentage, int BPM, Instrument instrument, int octave) {
+    public PatternHandler(int volumePercentage, int BPM, int instrumentCode, int octave) {
         this.notes = new ArrayList<String>();
         this.volume = setVolume(volumePercentage);
         this.BPM = setBPM(BPM);
-        this.instrument = instrument;
+        this.instrument = setInstrument(instrumentCode);
         this.octave = setOctave(octave);
     }
 
@@ -86,16 +62,33 @@ public class PatternHandler {
             
         notes.add(note);
     }
+    public int getVolume(){
+        return this.volume;
+    }
     private int setVolume(int volumePercentage){
         volumePercentage = setToDefaultIfAboveMaximum(volumePercentage, maximumVolumeValue, defaultVolumeValue);
         volumePercentage = setToZeroIfBelowMinimum(volumePercentage, minimumVolumeValue);
 
         return volumePercentage;
     }
+    public int getBPM(){
+        return this.BPM;
+    }
     private int setBPM(int BPM){
         BPM = setToZeroIfBelowMinimum(BPM, minimumBPMValue);
 
         return BPM;
+    }
+    public int getInstrument(){
+        return this.instrument;
+    }
+    private int setInstrument(int instrumentCode){
+        instrument = setToDefaultIfAboveMaximum(instrumentCode, 127, 0);
+
+        return instrument;
+    }
+    public int getOctave(){
+        return  this.octave;
     }
     private int setOctave(int octave){
         octave = setToDefaultIfAboveMaximum(octave, maximumOctaveValue, defaultOctaveValue);
@@ -119,30 +112,40 @@ public class PatternHandler {
     public Pattern generatePattern(){
         String volumeCode = convertFromPercentageToFineVolumeCode(this.volume);
         setOctaveOnNotes();
-        Pattern pattern = new Pattern(volumeCode + notes.toString());
+        //setSpaceOnNotes();
+        Pattern pattern = new Pattern(volumeCode + getNotesString());
         pattern.setTempo(this.BPM);
-        pattern.setInstrument(this.instrument.getValue());
+        pattern.setInstrument(this.instrument);
 
         return pattern;
     }
     private String convertFromPercentageToFineVolumeCode(int percentage){
         int fineVolume = (percentage * 127) / 100;
-        String volumeCode = ControllerCode + "[" + CoarseVolumeCode + ", " + fineVolume + "] ";
+        String volumeCode = ControllerCode + "(" + CoarseVolumeCode + ", " + fineVolume + ") ";
 
         return volumeCode;
     }
+    private String getNotesString(){
+        String notesString = notes.toString();
+        String notesSubstring = notesString.substring(1, notesString.length() - 1);
+
+        return notesSubstring;
+    }
     private void setOctaveOnNotes(){
-        for (String note : this.notes) {
-            note = note + this.octave;
-        }
+        for (int i = 0; i < this.notes.size(); i++)
+            addSymbolToNote(i, Integer.toString(this.octave));
+    }
+    /*
+    private void setSpaceOnNotes(){
+        for (int i = 0; i < this.notes.size(); i++)
+            addSymbolToNote(i, " ");
+    }*/
+    private void addSymbolToNote(int noteIndex, String symbolToAdd){
+        String note = this.notes.get(noteIndex);
+        String newNote = note + symbolToAdd;
+        this.notes.set(noteIndex, newNote);
     }
 
-    public Pattern convertArrayOfPatternsToPattern(ArrayList<Pattern> arrayOfPatterns){
-        Pattern fullSound = new Pattern();
-        for(int i=0; i<arrayOfPatterns.size(); i++)
-            fullSound.add(arrayOfPatterns.get(i), 1);
-        return fullSound;       
-    }
 
     public void savePatternToMidiFile(Pattern fullSound){
         final File arquivoMIDI = new File("convertedSound.MIDI");
