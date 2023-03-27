@@ -1,8 +1,11 @@
 package app;
 
+import org.jfugue.midi.MidiFileManager;
 import org.jfugue.pattern.Pattern;
 import org.jfugue.player.Player;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Music {
@@ -77,7 +80,6 @@ public class Music {
         }
     }
 
-
     public Pattern joinSequentialPatterns(){
         Pattern joinedPatterns = new Pattern();
 
@@ -88,16 +90,10 @@ public class Music {
 
         return joinedPatterns;
     }
-
     public void playText() throws Exception {
         Pattern joinedPatterns = joinSequentialPatterns();
         new Player().play(joinedPatterns);
     }
 
 
-
-
-   
-    
-    
 }

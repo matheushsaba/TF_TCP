@@ -135,11 +135,6 @@ public class PatternHandler {
         for (int i = 0; i < this.notes.size(); i++)
             addSymbolToNote(i, Integer.toString(this.octave));
     }
-    /*
-    private void setSpaceOnNotes(){
-        for (int i = 0; i < this.notes.size(); i++)
-            addSymbolToNote(i, " ");
-    }*/
     private void addSymbolToNote(int noteIndex, String symbolToAdd){
         String note = this.notes.get(noteIndex);
         String newNote = note + symbolToAdd;
