@@ -21,7 +21,7 @@ public class Music {
     private final int defaultOctave = 5;
 
 
-    // Properties
+    // Atributtes
     private ArrayList<PatternHandler> sequentialPatternHandlers;
     private PatternHandler actualPatternBuilder;
 
@@ -54,25 +54,25 @@ public class Music {
             makeActionOnPattern(musicSegmentAction);
     }
     private void makeActionOnPattern(SegmentAction musicSegmentAction) throws Exception {
-        if (musicSegmentAction.Type == SegmentAction.ActionType.PLAY_NOTE)
-            addNoteToMusic(musicSegmentAction);
+        if (musicSegmentAction.getType() == SegmentAction.ActionType.PLAY_NOTE)
+            addNoteToActualPatternHandler(musicSegmentAction);
         else
-            changePropertyOnMusic(musicSegmentAction);
+            changePropertyOnPatternHandler(musicSegmentAction);
     }
-    private void addNoteToMusic(SegmentAction musicSegmentAction) throws Exception {
-        PlayNoteAction playNoteAction = (PlayNoteAction)musicSegmentAction;
-        this.actualPatternBuilder.addNoteToPattern(playNoteAction.NoteToPlay);
+    private void addNoteToActualPatternHandler(SegmentAction musicSegmentAction) throws Exception {
+        PlaySoundAction playNoteAction = (PlaySoundAction)musicSegmentAction;
+        this.actualPatternBuilder.addNoteToPattern(playNoteAction.getNoteToPlay());
     }
-    private void changePropertyOnMusic(SegmentAction musicSegmentAction) throws Exception {
+    private void changePropertyOnPatternHandler(SegmentAction musicSegmentAction) throws Exception {
         ChangePropertyAction changePropertyAction = (ChangePropertyAction)musicSegmentAction;
-        ChangePropertyAction.ActionOnProperty action = changePropertyAction.ActionOnProperty;
-        int actionValue = changePropertyAction.PropertyNewValue;
-
-        PatternHandler newPatternHandler = getPatternWithNewProperty(action, actionValue);
+        PatternHandler newPatternHandler = createPatternWithNewProperty(changePropertyAction);
         this.sequentialPatternHandlers.add(newPatternHandler);
         this.actualPatternBuilder = this.sequentialPatternHandlers.get(this.sequentialPatternHandlers.size() - 1);
     }
-    private PatternHandler getPatternWithNewProperty(ChangePropertyAction.ActionOnProperty action, int actionValue) throws Exception {
+    private PatternHandler createPatternWithNewProperty(ChangePropertyAction changePropertyAction) throws Exception {
+        ChangePropertyAction.ActionOnProperty action = changePropertyAction.getActionOnProperty();
+        int actionValue = changePropertyAction.getPropertyNewValue();
+
         switch (action){
             case SET_VALUE_TO_INSTRUMENT:
                 return new PatternHandler(actualPatternBuilder.getVolume(), actualPatternBuilder.getBPM(), actionValue, actualPatternBuilder.getOctave());
@@ -116,7 +116,7 @@ public class Music {
         SimpleDateFormat formatter = new SimpleDateFormat("ddMyyyy-hh-mm-ss");  
         String stringDate = formatter.format(date);  
 
-        Pattern joinedPatterns = joinSequentialPatterns();
+        Pattern joinedPatterns = combineSequentialPatternsIntoOne();
         final File arquivoMIDI = new File("convertedSound" + stringDate + ".mid");
         try {
             MidiFileManager.savePatternToMidi(joinedPatterns, arquivoMIDI);
@@ -124,8 +124,7 @@ public class Music {
             err.printStackTrace();
         }
     }
-
-    public Pattern joinSequentialPatterns(){
+    public Pattern combineSequentialPatternsIntoOne(){
         Pattern joinedPatterns = new Pattern();
 
         for (PatternHandler patternHandler: this.sequentialPatternHandlers) {
@@ -135,9 +134,9 @@ public class Music {
 
         return joinedPatterns;
     }
-
     public void playText() throws Exception {
-        Pattern joinedPatterns = joinSequentialPatterns();
+        Pattern joinedPatterns = combineSequentialPatternsIntoOne();
         new Player().play(joinedPatterns);
     }
+
 }

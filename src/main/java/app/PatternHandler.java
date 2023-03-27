@@ -19,7 +19,6 @@ public class PatternHandler {
             add("R");
         }
     };
-
     private ArrayList<String> notes;
     private int volume;
     private int BPM;
@@ -62,8 +61,8 @@ public class PatternHandler {
         return this.volume;
     }
     private int setVolume(int volumePercentage){
-        volumePercentage = setToDefaultIfAboveMaximum(volumePercentage, maximumVolumeValue, defaultVolumeValue);
-        volumePercentage = setToZeroIfBelowMinimum(volumePercentage, minimumVolumeValue);
+        volumePercentage = setValueToDefaultIfAboveMaximum(volumePercentage, maximumVolumeValue, defaultVolumeValue);
+        volumePercentage = setValueToZeroIfBelowMinimum(volumePercentage, minimumVolumeValue);
 
         return volumePercentage;
     }
@@ -71,7 +70,7 @@ public class PatternHandler {
         return this.BPM;
     }
     private int setBPM(int BPM){
-        BPM = setToZeroIfBelowMinimum(BPM, minimumBPMValue);
+        BPM = setValueToZeroIfBelowMinimum(BPM, minimumBPMValue);
 
         return BPM;
     }
@@ -79,7 +78,7 @@ public class PatternHandler {
         return this.instrument;
     }
     private int setInstrument(int instrumentCode){
-        instrument = setToDefaultIfAboveMaximum(instrumentCode, 127, 0);
+        instrument = setValueToDefaultIfAboveMaximum(instrumentCode, 127, 0);
 
         return instrument;
     }
@@ -87,18 +86,18 @@ public class PatternHandler {
         return  this.octave;
     }
     private int setOctave(int octave){
-        octave = setToDefaultIfAboveMaximum(octave, maximumOctaveValue, defaultOctaveValue);
-        octave = setToZeroIfBelowMinimum(octave, minimumOctaveValue);
+        octave = setValueToDefaultIfAboveMaximum(octave, maximumOctaveValue, defaultOctaveValue);
+        octave = setValueToZeroIfBelowMinimum(octave, minimumOctaveValue);
 
         return octave;
     }
-    private int setToDefaultIfAboveMaximum(int value, int max, int defaultValue){
+    private int setValueToDefaultIfAboveMaximum(int value, int max, int defaultValue){
         if(value > max)
             return defaultValue;
 
         return value;
     }
-    private int setToZeroIfBelowMinimum(int value, int min){
+    private int setValueToZeroIfBelowMinimum(int value, int min){
         if(value < min)
             return 0;
 
@@ -131,11 +130,6 @@ public class PatternHandler {
         for (int i = 0; i < this.notes.size(); i++)
             addSymbolToNote(i, Integer.toString(this.octave));
     }
-    /*
-    private void setSpaceOnNotes(){
-        for (int i = 0; i < this.notes.size(); i++)
-            addSymbolToNote(i, " ");
-    }*/
     private void addSymbolToNote(int noteIndex, String symbolToAdd){
         String note = this.notes.get(noteIndex);
         String newNote = note + symbolToAdd;
