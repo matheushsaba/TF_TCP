@@ -13,83 +13,23 @@ public class TextToSoundConverter {
     public static void main(String[] args) throws Exception {
         // interface
 
-        //GraphicalInterface janela = new GraphicalInterface();
-        //janela.show();
+        Player newPlayer = new Player();
+        newPlayer.play("C D E A");
 
-        
-        // leitor de arquivo
-        /*
-        TxtFileHandler fileHandler = new TxtFileHandler();
-        String fileContent = "";
-        try {
-            fileContent = fileHandler.getStringFromTxtFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(fileContent);
-        Pattern p4 = new Pattern(fileContent).setTempo(200);
-        */
+        GraphicalInterface janela = new GraphicalInterface();
+        janela.show();
 
-/*
-        ArrayList<SegmentAction> actions = new ArrayList<>();
+        /*ArrayList<SegmentAction> actions = new ArrayList<>();
         String textToTest = "C cC!cCxcC3cC?cC;cC,cC";
         //String textToTest = "ABCD";
         //String textToTest = "A" + generateStringWithAllSymbols();
-
         for (int i = 0; i < textToTest.length(); i++) {
             SegmentAction action = TextToActionMapper.checkSegmentAction(textToTest, i);
             actions.add(action);
         }
         Music music = new Music(actions);
-
         // tocar música
         music.playText();*/
-
-        /*
-        Player player = new Player();
-        //Pattern p1 = new Pattern("T120 I[Guitar_Fret_Noise] :Controller[7, 63] C").setTempo(130);
-        Pattern p1 = new Pattern("T120 I[Guitar_Fret_Noise] :Controller(7, 63) C").setTempo(130);
-
-
-        // exportar o arquivo pra midi
-
-        // Cria um PatternHandler
-        PatternHandler fullSound = new PatternHandler(100, 80, 0, 5);
-        //Pattern musica = new Pattern();
-        // A música é o resultado de todos os patterns juntos
-        //musica = fullSound.convertArrayOfPatternsToPattern(patternsList);
-        player.play(p1);
-        // Salva o arquivo em .midi
-        //fullSound.savePatternToMidiFile(musica);
-
-        */
-
-
-        //PatternHandler fullSound = new PatternHandler(100, 80, 0, 0);
-
-
-        /*
-        Player player = new Player();
-        // Cria um array de patterns 
-        
-        //Pattern p2 = new Pattern("I[TROMBONE] X[Volume]=20 A Cq Cq Cq B A").setTempo(60);
-        Pattern p1 = new Pattern("I[TRUMPET] C D# D C").setTempo(130);
-        Pattern p2 = new Pattern("I[TRUMPET] C D#q D#q D#q D C").setTempo(130);
-        Pattern p3 = new Pattern("I[TRUMPET] C D#q D#q D#q F F").setTempo(130);
-        Pattern p4 = new Pattern("I[TRUMPET] F D# F D# F F").setTempo(130);
-        Pattern p5 = new Pattern("I[TRUMPET] F F D# D# G G D# D# D D# C C").setTempo(130);
-        
-        ArrayList<Pattern> patternsList = new ArrayList<Pattern>();
-        patternsList.add(p1);
-        patternsList.add(p2);
-        patternsList.add(p1);
-        patternsList.add(p3);
-        patternsList.add(p4);
-        patternsList.add(p4);
-        patternsList.add(p5);
-        */
-
-
     }
 
     public static String generateStringWithAllNotes(){
