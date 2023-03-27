@@ -12,10 +12,10 @@ public class TextToSoundConverter {
 
     public static void main(String[] args) throws Exception {
         // interface
-        /*
-        PlayerGUI janela = new PlayerGUI();
-        janela.show();
-        */
+
+        //GraphicalInterface janela = new GraphicalInterface();
+        //janela.show();
+
         
         // leitor de arquivo
         /*
@@ -30,7 +30,7 @@ public class TextToSoundConverter {
         Pattern p4 = new Pattern(fileContent).setTempo(200);
         */
 
-
+/*
         ArrayList<SegmentAction> actions = new ArrayList<>();
         String textToTest = "C cC!cCxcC3cC?cC;cC,cC";
         //String textToTest = "ABCD";
@@ -43,7 +43,7 @@ public class TextToSoundConverter {
         Music music = new Music(actions);
 
         // tocar música
-        music.playText();
+        music.playText();*/
 
         /*
         Player player = new Player();
