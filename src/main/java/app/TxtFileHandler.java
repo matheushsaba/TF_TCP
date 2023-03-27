@@ -9,6 +9,7 @@ import javax.swing.JFileChooser;
 import java.io.File;
 
 public class TxtFileHandler {
+    // Methods
     private String getFileNameViaFileExplorer() throws Exception{
         JFileChooser chooser = new JFileChooser();
         int status = chooser.showOpenDialog(null);
@@ -22,7 +23,6 @@ public class TxtFileHandler {
         }
         return fileName;
     }
-
     public String getStringFromTxtFile() throws IOException{
         String fileName = "";
         try {
@@ -34,5 +34,4 @@ public class TxtFileHandler {
         String fileContent = Files.readString(filePath);
         return fileContent;
     }
-
 }
