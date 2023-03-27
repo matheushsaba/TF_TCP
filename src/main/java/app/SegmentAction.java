@@ -2,12 +2,12 @@ package app;
 
 public class SegmentAction{
     // Attributes
-    public ActionType Type;
+    private ActionType type;
 
     
     // Constructors
     public SegmentAction(ActionType type){
-        this.Type = type;
+        this.type = type;
     }
 
 
@@ -15,5 +15,11 @@ public class SegmentAction{
     public enum ActionType {
         PLAY_NOTE, 
         CHANGE_PROPERTY
+    }
+
+
+    // Methods
+    public ActionType getType(){
+        return this.type;
     }
 }

@@ -2,15 +2,17 @@ package app;
 
 public class ChangePropertyAction extends SegmentAction {
     // Attributes
-    public ActionOnProperty ActionOnProperty;
-    public int PropertyNewValue;
+    private ActionOnProperty actionOnProperty;
+    private int propertyNewValue;
+
 
     // Constructors
     public ChangePropertyAction(ActionOnProperty propertyToChange, int propertyNewValue) {
         super(ActionType.CHANGE_PROPERTY);
-        this.ActionOnProperty = propertyToChange;
-        this.PropertyNewValue = propertyNewValue;
+        this.actionOnProperty = propertyToChange;
+        this.propertyNewValue = propertyNewValue;
     }
+
 
     // Enumerations
     public enum ActionOnProperty {
@@ -20,5 +22,13 @@ public class ChangePropertyAction extends SegmentAction {
         SET_VALUE_TO_BPM, 
         DOUBLE_VOLUME
     }
-    
+
+
+    // Methods
+    public ChangePropertyAction.ActionOnProperty getActionOnProperty() {
+        return this.actionOnProperty;
+    }
+    public int getPropertyNewValue(){
+        return this.propertyNewValue;
+    }
 }

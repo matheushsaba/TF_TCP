@@ -57,7 +57,7 @@ public class TextToActionMapper {
     }
     private static SegmentAction getLetterAction(Character character, String rawText, int characterIndex) throws Exception {
         if (isCharacterUpperCaseNote(character))
-            return new PlayNoteAction(getCharacterAsciiCode(character));
+            return new PlaySoundAction(getCharacterAsciiCode(character));
 
         else if (isCharacterNonNoteVowel(character))
             return new ChangePropertyAction(ActionOnProperty.SET_VALUE_TO_INSTRUMENT, JFUGUE_HARPSICHORD_VALUE);
@@ -84,9 +84,9 @@ public class TextToActionMapper {
         Character previousCharacter = rawText.charAt(characterIndex -1);
 
         if (isCharacterUpperCaseNote(previousCharacter))
-            return new PlayNoteAction(getCharacterAsciiCode(previousCharacter)); // Retorna a nota anterior
+            return new PlaySoundAction(getCharacterAsciiCode(previousCharacter)); // Retorna a nota anterior
         else
-            return new PlayNoteAction(JFUGUE_SILENCE); // Retorna silêncio
+            return new PlaySoundAction(JFUGUE_SILENCE); // Retorna silêncio
     }
 
 
