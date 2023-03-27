@@ -30,7 +30,7 @@ public class TextToSoundConverter {
         Pattern p4 = new Pattern(fileContent).setTempo(200);
         */
 
-/*
+        
         ArrayList<SegmentAction> actions = new ArrayList<>();
         String textToTest = "C cC!cCxcC3cC?cC;cC,cC";
         //String textToTest = "ABCD";
@@ -43,9 +43,10 @@ public class TextToSoundConverter {
         Music music = new Music(actions);
 
         // tocar música
-        music.playText();*/
+        music.playText();
 
-        /*
+
+        /* 
         Player player = new Player();
         //Pattern p1 = new Pattern("T120 I[Guitar_Fret_Noise] :Controller[7, 63] C").setTempo(130);
         Pattern p1 = new Pattern("T120 I[Guitar_Fret_Noise] :Controller(7, 63) C").setTempo(130);
@@ -62,13 +63,12 @@ public class TextToSoundConverter {
         // Salva o arquivo em .midi
         //fullSound.savePatternToMidiFile(musica);
 
-        */
 
 
         //PatternHandler fullSound = new PatternHandler(100, 80, 0, 0);
 
-
-        /*
+        
+        
         Player player = new Player();
         // Cria um array de patterns 
         
@@ -87,8 +87,8 @@ public class TextToSoundConverter {
         patternsList.add(p4);
         patternsList.add(p4);
         patternsList.add(p5);
+        player.play(p5);
         */
-
 
     }
 
