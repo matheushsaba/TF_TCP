@@ -13,8 +13,8 @@ public class TextToSoundConverter {
     public static void main(String[] args) throws Exception {
         // interface
 
-        //GraphicalInterface janela = new GraphicalInterface();
-        //janela.show();
+        GraphicalInterface janela = new GraphicalInterface();
+        janela.show();
 
         
         // leitor de arquivo
