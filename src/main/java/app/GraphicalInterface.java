@@ -506,40 +506,19 @@ public class GraphicalInterface extends javax.swing.JFrame {
         textBox.setText(fileContent);
     }//GEN-LAST:event_importButtonActionPerformed
 
+    
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        System.out.println("playing music...");
-        
-        ArrayList<SegmentAction> actions = new ArrayList<SegmentAction>();
-        String musicString = textBox.getText();
-        
-        for (int i = 0; i < musicString.length(); i++) {
-            SegmentAction action = null;
-            try {
-                action = TextToActionMapper.checkSegmentAction(musicString, i);
-            } catch (Exception ex) {
-                Logger.getLogger(GraphicalInterface.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            actions.add(action);
-        }
-        
-        Music music = null;
-        try {
-            music = new Music(actions);
-        } catch (Exception ex) {
-            Logger.getLogger(GraphicalInterface.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Music music = Music.generateMusicFromString(textBox.getText());
         try {
             music.playText();
         } catch (Exception ex) {
-            Logger.getLogger(GraphicalInterface.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_playButtonActionPerformed
 
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
-        System.out.println("exporting to file...");
-        
-        String a = textBox.getText();
-        System.out.println(a);
+        Music music = Music.generateMusicFromString(textBox.getText());
+        music.saveMusicToMidiFile();
     }//GEN-LAST:event_exportButtonActionPerformed
 
     private void instructionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructionsButtonActionPerformed

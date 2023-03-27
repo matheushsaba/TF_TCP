@@ -34,5 +34,4 @@ public class TxtFileHandler {
         String fileContent = Files.readString(filePath);
         return fileContent;
     }
-
 }
