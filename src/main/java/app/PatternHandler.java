@@ -1,11 +1,8 @@
 package app;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.jfugue.midi.MidiFileManager;
 import org.jfugue.pattern.Pattern;
 
 public class PatternHandler {
@@ -52,7 +49,6 @@ public class PatternHandler {
         this.instrument = setInstrument(instrumentCode);
         this.octave = setOctave(octave);
     }
-
 
     // Methods
     public void addNoteToPattern(String note) throws Exception{
@@ -138,15 +134,5 @@ public class PatternHandler {
         String note = this.notes.get(noteIndex);
         String newNote = note + symbolToAdd;
         this.notes.set(noteIndex, newNote);
-    }
-
-
-    public void savePatternToMidiFile(Pattern fullSound){
-        final File arquivoMIDI = new File("convertedSound.MIDI");
-        try {
-            MidiFileManager.savePatternToMidi(fullSound, arquivoMIDI);
-        } catch (final IOException err) {
-            err.printStackTrace();
-        }        
     }
 }

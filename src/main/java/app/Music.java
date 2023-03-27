@@ -5,6 +5,13 @@ import org.jfugue.player.Player;
 
 import java.util.ArrayList;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;  
+import java.text.SimpleDateFormat;
+
+import org.jfugue.midi.MidiFileManager;
+
 public class Music {
     // Constants
     private final int defaultVolumeValue = 50;
@@ -19,11 +26,16 @@ public class Music {
     private PatternHandler actualPatternBuilder;
 
 
-    // Constructor
+    // Constructores
     public Music(ArrayList<SegmentAction> musicActions) throws Exception {
         this.sequentialPatternHandlers = initializePatternHandlerList();
         actualPatternBuilder = this.sequentialPatternHandlers.get(0);
         generatePatternHandlers(musicActions);
+    }
+
+    public Music() {
+        sequentialPatternHandlers =  new ArrayList<>();
+        actualPatternBuilder = null;
     }
 
 
@@ -77,6 +89,41 @@ public class Music {
         }
     }
 
+    public static Music generateMusicFromString(String musicString) {
+        ArrayList<SegmentAction> actions = new ArrayList<SegmentAction>();
+        
+        for (int i = 0; i < musicString.length(); i++) {
+            SegmentAction action = null;
+            try {
+                action = TextToActionMapper.checkSegmentAction(musicString, i);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            actions.add(action);
+        }
+        Music music = null;
+        try {
+            music = new Music(actions);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return music;
+    }
+
+    public void saveMusicToMidiFile() {
+        Date date = new Date();  
+        SimpleDateFormat formatter = new SimpleDateFormat("ddMyyyy-hh-mm-ss");  
+        String stringDate = formatter.format(date);  
+
+        Pattern joinedPatterns = combineSequentialPatternsIntoOne();
+        final File arquivoMIDI = new File("convertedSound" + stringDate + ".mid");
+        try {
+            MidiFileManager.savePatternToMidi(joinedPatterns, arquivoMIDI);
+        } catch (final IOException err) {
+            err.printStackTrace();
+        }
+    }
     public Pattern combineSequentialPatternsIntoOne(){
         Pattern joinedPatterns = new Pattern();
 
