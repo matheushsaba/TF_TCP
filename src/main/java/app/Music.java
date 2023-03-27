@@ -80,6 +80,15 @@ public class Music {
         }
     }
 
+    public void saveMusicToMidiFile(){
+        Pattern joinedPatterns = joinSequentialPatterns();
+        final File arquivoMIDI = new File("convertedSound.MIDI");
+        try {
+            MidiFileManager.savePatternToMidi(joinedPatterns, arquivoMIDI);
+        } catch (final IOException err) {
+            err.printStackTrace();
+        }
+    }
     public Pattern joinSequentialPatterns(){
         Pattern joinedPatterns = new Pattern();
 

@@ -45,6 +45,9 @@ public class TextToSoundConverter {
         // tocar música
         music.playText();
 
+        // exportar música
+        //music.saveMusicToMidiFile();
+
 
         /* 
         Player player = new Player();
