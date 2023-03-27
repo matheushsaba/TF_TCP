@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import app.ChangePropertyAction.ActionOnProperty;
 
-public class TextSegmentToActionMapper {
+public class TextToActionMapper {
     // Mapping definitions
     // Musical notes
     private static final HashSet<Character> NOTES_LIST = new HashSet<>(Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G'));
@@ -19,8 +19,8 @@ public class TextSegmentToActionMapper {
     // Sound commands
     private static final ArrayList<Character> COMMANDS_RAISE_OCTAVE = new ArrayList<>(Arrays.asList('?', '.'));
     private static final char COMMAND_DOUBLE_VOLUME = ' ';
-    private static final char COMMAND_SILENCE = ' ';
     private static final char JFUGUE_SILENCE = 'R';
+
     // General instruments
     private static final int JFUGUE_HARPSICHORD_VALUE = 7;
     private static final int JFUGUE_AGOGO_VALUE = 114;
@@ -28,48 +28,34 @@ public class TextSegmentToActionMapper {
     private static final int JFUGUE_PAN_FLUTE_VALUE = 76;
     private static final int JFUGUE_CHURCH_ORGAN_VALUE = 20;
 
+
     // Methods
-    private static int getCharacterAsciiCode(Character character){
-        int characterAsciiCode = (int)character;
-        return characterAsciiCode;
-    }
-    private static boolean isCharacterletter(Character character) {
-        boolean isUpperCaseLetter = (getCharacterAsciiCode(character) >= getCharacterAsciiCode('A') && getCharacterAsciiCode(character) <= getCharacterAsciiCode('Z'));
-        boolean isLowerCaseLetter = (getCharacterAsciiCode(character) >= getCharacterAsciiCode('a') && getCharacterAsciiCode(character) <= getCharacterAsciiCode('z'));
-        return  (isUpperCaseLetter || isLowerCaseLetter);
-    }
-    private static boolean isCharacterNumber(Character character) {
-        return getCharacterAsciiCode(character) >= getCharacterAsciiCode('0') && getCharacterAsciiCode(character) <= getCharacterAsciiCode('9');
-    }
-    private static boolean isCharacterUpperCaseNote(Character character) {
-        return NOTES_LIST.contains(character);
-    }
-    private static boolean isCharacterNonNoteVowel(Character character) {
-        return NON_NOTE_VOWELS.contains(character);
-    }
-    private static boolean isCharacterRaiseOctave(Character character) {
-        return COMMANDS_RAISE_OCTAVE.contains(character);
-    }
-    private static SegmentAction repeatNoteOrStaySilent(String rawText, int characterIndex){
-        Character previousCharacter = rawText.charAt(characterIndex -1);
-        if (isCharacterUpperCaseNote(previousCharacter))
-            return new PlayNoteAction(getCharacterAsciiCode(previousCharacter)); // Retorna a nota anterior
-        else
-            return new PlayNoteAction(JFUGUE_SILENCE); // Retorna silêncio
-    }
-    // Segment methods
-    public static SegmentAction checkSegmentAction(String rawText, int characterIndex){
+    // Verifica a ação do segmento
+    public static SegmentAction checkSegmentAction(String rawText, int characterIndex) throws Exception {
         Character character = rawText.charAt(characterIndex);
-        if (isCharacterletter(character))
+
+        if (isCharacterLetter(character))
             return getLetterAction(character, rawText, characterIndex);
         
         else if (isCharacterNumber(character))
             return new ChangePropertyAction(ActionOnProperty.ADD_VALUE_TO_INSTRUMENT, Character.getNumericValue(character));
+
         else
             return getSymbolAction(rawText, characterIndex);
     }
 
-    private static SegmentAction getLetterAction(Character character, String rawText, int characterIndex){
+
+    // Conjunto de verificações caso o caractere seja uma letra
+    private static boolean isCharacterLetter(Character character){
+        boolean isUpperCaseLetter = (getCharacterAsciiCode(character) >= getCharacterAsciiCode('A') && getCharacterAsciiCode(character) <= getCharacterAsciiCode('Z'));
+        boolean isLowerCaseLetter = (getCharacterAsciiCode(character) >= getCharacterAsciiCode('a') && getCharacterAsciiCode(character) <= getCharacterAsciiCode('z'));
+        return  (isUpperCaseLetter || isLowerCaseLetter);
+    }
+    private static int getCharacterAsciiCode(Character character){
+        int characterAsciiCode = (int)character;
+        return characterAsciiCode;
+    }
+    private static SegmentAction getLetterAction(Character character, String rawText, int characterIndex) throws Exception {
         if (isCharacterUpperCaseNote(character))
             return new PlayNoteAction(getCharacterAsciiCode(character));
 
@@ -77,14 +63,43 @@ public class TextSegmentToActionMapper {
             return new ChangePropertyAction(ActionOnProperty.SET_VALUE_TO_INSTRUMENT, JFUGUE_HARPSICHORD_VALUE);
         
         else
-            return repeatNoteOrStaySilent(rawText, characterIndex);
+            return checkIfLastCharacterIsNote(rawText, characterIndex);
+    }
+    private static boolean isCharacterUpperCaseNote(Character character) {
+        return NOTES_LIST.contains(character);
+    }
+    private static boolean isCharacterNonNoteVowel(Character character) {
+        return NON_NOTE_VOWELS.contains(character);
+    }
+    private static SegmentAction checkIfLastCharacterIsNote(String rawText, int characterIndex) throws Exception {
+        if (!isPreviousIndexPositive(characterIndex))
+            throw new Exception("Erro, não há caractere anterior");
+
+        return repeatLastNoteOrStaySilent(rawText,characterIndex);
+    }
+    public static boolean isPreviousIndexPositive(int characterIndex){
+        return characterIndex - 1 >= 0;
+    }
+    private static SegmentAction repeatLastNoteOrStaySilent(String rawText, int characterIndex){
+        Character previousCharacter = rawText.charAt(characterIndex -1);
+
+        if (isCharacterUpperCaseNote(previousCharacter))
+            return new PlayNoteAction(getCharacterAsciiCode(previousCharacter)); // Retorna a nota anterior
+        else
+            return new PlayNoteAction(JFUGUE_SILENCE); // Retorna silêncio
     }
 
 
-    private static SegmentAction getSymbolAction(String rawText, int characterIndex){
+    // Conjunto de verificações caso o caractere seja um número
+    private static boolean isCharacterNumber(Character character) {
+        return getCharacterAsciiCode(character) >= getCharacterAsciiCode('0') && getCharacterAsciiCode(character) <= getCharacterAsciiCode('9');
+    }
+
+
+    // Conjunto de verificações caso o caractere seja um símbolo
+    private static SegmentAction getSymbolAction(String rawText, int characterIndex) throws Exception {
         Character character = rawText.charAt(characterIndex);
-        if(character == COMMAND_SILENCE)
-            return new PlayNoteAction(COMMAND_SILENCE); // Retorna silêncio
+
         switch (character){
             case COMMAND_AGOGO:
                 return new ChangePropertyAction(ActionOnProperty.SET_VALUE_TO_INSTRUMENT, JFUGUE_AGOGO_VALUE);
@@ -100,7 +115,10 @@ public class TextSegmentToActionMapper {
                 if(isCharacterRaiseOctave(character))
                     return new ChangePropertyAction(ActionOnProperty.RAISE_OCTAVE, 1);
                 else
-                    return repeatNoteOrStaySilent(rawText, characterIndex);
+                    return checkIfLastCharacterIsNote(rawText, characterIndex);
         }
+    }
+    private static boolean isCharacterRaiseOctave(Character character) {
+        return COMMANDS_RAISE_OCTAVE.contains(character);
     }
 }
