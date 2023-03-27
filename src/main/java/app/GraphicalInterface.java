@@ -11,6 +11,8 @@ import org.jfugue.player.Player;
 import org.jfugue.pattern.Pattern;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -505,11 +507,39 @@ public class GraphicalInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_importButtonActionPerformed
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        // TODO add your handling code here:
+        System.out.println("playing music...");
+        
+        ArrayList<SegmentAction> actions = new ArrayList<SegmentAction>();
+        String musicString = textBox.getText();
+        
+        for (int i = 0; i < musicString.length(); i++) {
+            SegmentAction action = null;
+            try {
+                action = TextToActionMapper.checkSegmentAction(musicString, i);
+            } catch (Exception ex) {
+                Logger.getLogger(GraphicalInterface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            actions.add(action);
+        }
+        
+        Music music = null;
+        try {
+            music = new Music(actions);
+        } catch (Exception ex) {
+            Logger.getLogger(GraphicalInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            music.playText();
+        } catch (Exception ex) {
+            Logger.getLogger(GraphicalInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_playButtonActionPerformed
 
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
-        // TODO add your handling code here:
+        System.out.println("exporting to file...");
+        
+        String a = textBox.getText();
+        System.out.println(a);
     }//GEN-LAST:event_exportButtonActionPerformed
 
     private void instructionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructionsButtonActionPerformed

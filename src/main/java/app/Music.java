@@ -93,11 +93,4 @@ public class Music {
         Pattern joinedPatterns = joinSequentialPatterns();
         new Player().play(joinedPatterns);
     }
-
-
-
-
-   
-    
-    
 }

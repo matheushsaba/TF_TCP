@@ -53,6 +53,15 @@ public class PatternHandler {
         this.instrument = setInstrument(instrumentCode);
         this.octave = setOctave(octave);
     }
+    
+    /*
+    public PatternHandler() {
+        this.notes = new ArrayList<String>();
+        this.volume = setVolume(defaultVolumeValue);
+        this.BPM = setBPM(BPM);
+        this.instrument = setInstrument(instrument);
+        this.octave = setOctave(octave);
+    }*/
 
 
     // Methods
